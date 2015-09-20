@@ -3,9 +3,6 @@
 -- since the others build on it.  Exactly how you break this up into separate
 -- files is totally up to you.
 gc = require("gameCore");
-require("gameCoreInputEvents");
-require("gameCoreCollisionEvents");
-require("gameCoreMainLoop");
 
 -- Create a scene object to tie functions to.
 local scene = storyboard.newScene();

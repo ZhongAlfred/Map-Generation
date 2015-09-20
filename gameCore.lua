@@ -96,13 +96,8 @@ function gameCore:init(inDisplayGroup)
 --  gc.camera:track();
   gc.gameDG:insert(gc.background);
   gc.gameDG:insert(gc.camera);
-  gc.gameDG:insert(gc.controlDG);
+  --gc.gameDG:insert(gc.controlDG);
   
-  
-  -- Now reset level state so we're good to go.
-  gc.resetLevel();
-  
-
 end -- End init().
 
 
@@ -122,78 +117,8 @@ function gameCore:loadGraphics()
 		graphics.newGradient( { 0, .3, 1 }, { 0, .75, 1 }, "down" )
 	);
 	--gc.gameDG:insert(bgGradient);
-	
-  --Player Sprite
-  --[[gc.player.sprite = display.newSprite(
-    graphics.newImageSheet("Images/spelunker_sprite.png",
-      { width = 60, height = 87, numFrames = 14 }
-    ),
-    gc.player.sequenceData
-  );	--display.newImage("Images/spelunker.png", true);
-  gc.player.sprite.x, gc.player.sprite.y = display.contentCenterX, 100;
-  local polyBody = { -20,-43.5,   20,-43.5,   29,-20,   29,20,   20,43.5,   -20,43.5,  -29,20,  -29,-20,}; --Shape of sprite physics body
-  physics.addBody(
-    gc.player.sprite, "dynamic", 
-	{ density = 35, friction = 0.1, bounce = 0 , shape = polyBody}
-  );
-  gc.player.sprite.objName = "player";
-  gc.player.sprite.isFixedRotation = true;
-  gc.player.sprite:setSequence("lookRight");
-  gc.player.sprite:play();]]--
-  
-  --gc.gameDG:insert(gc.player.sprite);
-  
-  --Controls
-  gc.controlDG = display.newGroup();
-  --Left Arrow
-  local scale = .3;
-  gc.controls.left = display.newImage("Images/left.png", true);
-  gc.controls.left.anchorX, gc.controls.left.anchorY = 0,0;
-  gc.controls.left:scale(scale,scale);
-  gc.controls.left.x = 0;
-  gc.controls.left.y = display.contentHeight - gc.controls.left.height * scale;
-  gc.controls.left.alpha = 1;
-  gc.controls.left.controlName = "left";
-  gc.controlDG:insert(gc.controls.left);
-  
-  --Right Arrow
-  gc.controls.right = display.newImage("Images/right.png", true);
-  gc.controls.right.anchorX, gc.controls.right.anchorY = 0,0;
-  gc.controls.right:scale(scale,scale);
-  gc.controls.right.x = gc.controls.right.width * scale + 5; --5 is buffer between left and right
-  gc.controls.right.y = display.contentHeight - gc.controls.right.height * scale;
-  gc.controls.right.alpha = 1;
-  gc.controls.right.controlName = "right";
-  gc.controlDG:insert(gc.controls.right);
-  
-  --Jump Control
-  gc.controls.jump = display.newImage("Images/up.png", true);
-  gc.controls.jump.anchorX, gc.controls.jump.anchorY = 0,0;
-  gc.controls.jump:scale(scale,scale);
-  gc.controls.jump.x = display.contentWidth - gc.controls.jump.width * scale; --5 is buffer between left and jump
-  gc.controls.jump.y = display.contentHeight - gc.controls.jump.height * scale;
-  gc.controls.jump.alpha = 1;
-  gc.controls.jump.controlName = "jump";
-  gc.controlDG:insert(gc.controls.jump);
 
 end -- End loadGraphics().
-
-
--- ============================================================================
--- Resets the game at the start of a level.
--- ============================================================================
-function gameCore:resetLevel()
-
-  utils:log("gameCore", "resetLevel()");
-
-  -- Reset state (aka variables) as needed.
-  
-  --Bring UI things like left and right arrows to the front (Because they are covered up when drawCurrentLevel is called)
-  gc.controls.left:toFront();
-  gc.controls.right:toFront();
-  gc.controls.jump:toFront();
-
-end -- End resetLevel().
 
 
 -- ============================================================================
@@ -555,37 +480,6 @@ function gameCore:generateLevel()
   
 
 end -- End drawCurrentLevel().
-
-
--- ============================================================================
--- Show a small, transient, expanding and fading message in the middle
--- of the screen.
---
--- @param inMsg The message to display
--- ============================================================================
-function gameCore:showMessage(inMsg)
-
-  utils:log("gameCore", "showMessage(): inMsg = " .. inMsg);
-
-  -- Create message text.
-  local msgText = display.newText(inMsg, 0, 0, nil, 20);
-  msgText:setTextColor(1, 1, 0);
-  msgText.x = display.contentCenterX;
-  msgText.y = display.contentCenterY;
-  msgText.alpha = 1;
-  msgText.xScale = 1.0;
-  msgText.yScale = 1.0;
-
-  transition.to(msgText,
-    { time = 1000, alpha = 0, xScale = 5.0, yScale = 5.0,
-      onComplete = function(inTarget)
-        inTarget:removeSelf();
-        inTarget = nil;
-      end
-    }
-  );
-
-end -- End showMessage().
 
 
 -- ============================================================================
